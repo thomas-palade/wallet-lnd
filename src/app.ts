@@ -10,6 +10,10 @@ app.get('/', (req, res) => {
 import { close } from './lib/postgres/pool';
 import util from 'util';
 
+// Endpoints
+import setupWalletRoutes from './wallets/routes';
+setupWalletRoutes(app);
+
 process.on('SIGTERM', () => {
   console.log(
     `BlackJack service received 'SIGTERM'. Initiating graceful shutdown.`
