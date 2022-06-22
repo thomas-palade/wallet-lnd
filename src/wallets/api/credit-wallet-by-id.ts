@@ -9,7 +9,7 @@ export const creditWalletById: RequestHandler = async (
   console.log(req.body);
   console.log(req.params);
   try {
-    res.status(401).send({
+    res.status(200).send({
       "transactionId" : "tx102",
       "coins" : 1000
     });
