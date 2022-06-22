@@ -2,13 +2,13 @@ import express from 'express';
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World 1!');
-});
-
 // Gracefull shutdown
 import { close } from './lib/postgres/pool';
 import util from 'util';
+
+// Endpoints
+import setupWalletRoutes from './wallets/routes';
+setupWalletRoutes(app);
 
 process.on('SIGTERM', () => {
   console.log(
