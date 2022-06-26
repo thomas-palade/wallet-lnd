@@ -1,0 +1,1 @@
+type ErrorResponse = { readonly message: string; };
