@@ -1,0 +1,7 @@
+flyway \
+  -user=$DATABASE_USER \
+  -password=$DATABASE_PASSWORD \
+  -schemas=$DATABASE_NAME \
+  -url=jdbc:postgresql://$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME \
+  -locations=filesystem:./db/migration/ \
+  migrate

@@ -1,0 +1,5 @@
+RUNNING_DATABASE=$(docker ps | grep '5432->5432/tcp' | grep -oE '[^ ]+$')
+if [[ ! -z ${RUNNING_DATABASE} ]]; then
+  docker kill ${RUNNING_DATABASE}
+  docker rm ${RUNNING_DATABASE}
+fi

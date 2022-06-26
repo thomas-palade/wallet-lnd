@@ -1,0 +1,11 @@
+./bin/db-stop
+source ./bin/db-env
+docker run \
+  -e POSTGRES_USER=$DATABASE_USER \
+  -e POSTGRES_PASSWORD=$DATABASE_PASSWORD \
+  -e POSTGRES_DB=$DATABASE_NAME \
+  -p $DATABASE_PORT:5432 \
+  --name lls-svc-blackjack-db -d circleci/postgres:13.4-ram
+sleep 5
+./bin/db-clean
+./bin/db-migrate
