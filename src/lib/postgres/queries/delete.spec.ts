@@ -1,28 +1,10 @@
 import test from 'ava';
+import { createTableWithTableName, dropTableWithTableName } from '../../../test-support/data/database';
 import { getClient, getNewPool } from '../pool';
 import { deleteAll } from './delete';
 import { findAllRows } from './find';
 
 const TABLE_NAME = 'TABLE_NAME';
-
-const _dropTableWithTableName = async (TABLE: string) => {
-  return client.query(`
-    DROP TABLE IF EXISTS ${TABLE} CASCADE;
-  `);
-};
-
-const _createTableWithTableName = async (TABLE: string) => {
-  return client.query(`
-    CREATE TABLE IF NOT EXISTS ${TABLE} (
-      id BIGINT,
-      value TEXT,
-      value2 TEXT,
-      deleted_at TIMESTAMP,
-      precise_number FLOAT                                         
-    );
-    TRUNCATE ${TABLE}
-  `);
-};
 
 // tslint:disable-next-line: no-let
 let client: any;
@@ -30,11 +12,11 @@ const pool = getNewPool();
 
 test.beforeEach(async () => {
   client = await getClient(pool);
-  await _createTableWithTableName(TABLE_NAME);
+  await createTableWithTableName(client, TABLE_NAME);
 });
 
 test.afterEach(async () => {
-  await _dropTableWithTableName(TABLE_NAME);
+  await dropTableWithTableName(client, TABLE_NAME);
   client.release();
 });
 

@@ -19,3 +19,19 @@ export const findAllRows = async (
   `);
   return selected.rows;
 };
+
+export const findFirstRowWithId = async (
+  client: any,
+  table: string,
+  id: string
+) => {
+  return (
+    await client.query(`
+    SELECT *
+    FROM ${table}
+    WHERE id='${id}'
+    ORDER BY id ASC
+    LIMIT 1
+  `)
+  ).rows[0];
+};
