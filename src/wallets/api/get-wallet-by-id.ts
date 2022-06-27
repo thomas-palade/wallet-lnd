@@ -8,7 +8,7 @@ export const getWalletById: RequestHandler = async (
 ) => {
   const client = await getClient();
   try {
-    const wallet = await findWalletById(client, req.body.id);
+    const wallet = await findWalletById(client, Number(req.params.walletId));
     if (!wallet) {
       res.status(404).send({});
       return;
