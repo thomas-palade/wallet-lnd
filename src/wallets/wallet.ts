@@ -66,9 +66,9 @@ export const deleteAllWallets = async (
   return (await client.query(DELETE_ALL_WALLETS, [])).rows[0];
 };
 
-export const deleteWalletsById = async (
+export const deleteWalletById = async (
   client: PoolClient,
-  walletId: string
+  id: number
 ): Promise<void> => {
-  return (await client.query(DELETE_WALLET_BY_ID, [walletId])).rows[0];
+  return (await client.query(DELETE_WALLET_BY_ID, [id])).rows[0];
 };

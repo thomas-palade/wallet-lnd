@@ -5,13 +5,13 @@ import { findAllRows } from './find';
 
 const TABLE_NAME = 'TABLE_NAME';
 
-const _dropTableWithTableName = async (client: any, TABLE: string) => {
+const _dropTableWithTableName = async (TABLE: string) => {
   return client.query(`
     DROP TABLE IF EXISTS ${TABLE} CASCADE;
   `);
 };
 
-const _createTableWithTableName = async (client: any, TABLE: string) => {
+const _createTableWithTableName = async (TABLE: string) => {
   return client.query(`
     CREATE TABLE IF NOT EXISTS ${TABLE} (
       id BIGINT,
@@ -30,11 +30,11 @@ const pool = getNewPool();
 
 test.beforeEach(async () => {
   client = await getClient(pool);
-  await _createTableWithTableName(client, TABLE_NAME);
+  await _createTableWithTableName(TABLE_NAME);
 });
 
 test.afterEach(async () => {
-  await _dropTableWithTableName(client, TABLE_NAME);
+  await _dropTableWithTableName(TABLE_NAME);
   client.release();
 });
 

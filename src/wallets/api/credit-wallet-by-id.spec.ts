@@ -7,6 +7,7 @@ import request from 'supertest';
 import { WALLET_ID } from '../../test-support/data/wallet';
 
 let client: PoolClient;
+let server: StoppableServer;
 const pool = getNewPool();
 
 test.beforeEach(async () => {
@@ -16,14 +17,6 @@ test.beforeEach(async () => {
 test.afterEach(async () => {
   await deleteAllTables(client);
   client.release();
-});
-
-let server: StoppableServer;
-
-test.beforeEach(async () => {
-});
-
-test.afterEach(async () => {
 });
 
 test.after(() => {
