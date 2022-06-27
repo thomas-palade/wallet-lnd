@@ -13,6 +13,7 @@ import {
   WALLET_INSERT,
   COINS,
   UPDATED_AT,
+  TRANSACTION_ID,
 } from '../test-support/data';
 import { deleteAllTables } from '../test-support/database';
 
@@ -69,7 +70,8 @@ test('When `createWallet` is called, Then it adds an wallet to the table', async
 
   await createWallet(
     client,
-    COINS
+    COINS,
+    TRANSACTION_ID
   );
 
   const results2 = await findAllRows(client, TABLES.WALLETS);
@@ -80,6 +82,7 @@ test('When `createWallet` is called, Then it returns the created wallet', async 
   const created = await createWallet(
     client,
     COINS,
+    TRANSACTION_ID
   );
   t.deepEqual(created, {
     ...created,
@@ -91,10 +94,12 @@ test('When `findAllWallets` is called Then it returns all the wallets', async (t
   const firstWallet = await createWallet(
     client,
     COINS,
+    TRANSACTION_ID
   );
   const secondWallet = await createWallet(
     client,
-    COINS
+    COINS,
+    TRANSACTION_ID
   );
 
   const results = await findAllWallets(client);
@@ -105,7 +110,8 @@ test('When `findAllWallets` is called Then it returns all the wallets', async (t
 test('When `findWalletById` is called with an `id` parameter, Then it returns the `Wallet` associated with that `id`', async (t) => {
   const created = await createWallet(
     client,
-    COINS
+    COINS,
+    TRANSACTION_ID
   );
   const result = await findWalletById(client, created.id);
   t.deepEqual(result, created);
@@ -115,6 +121,7 @@ test('When `updateWallet` is called with `wallet` as parameter, Then it updates 
   const created = await createWallet(
     client,
     COINS,
+    TRANSACTION_ID
   );
 
   const UPDATED_WALLET = {
@@ -141,10 +148,12 @@ test('When `deleteAllWallets` is called, then it deletes all the wallets', async
   const firstWallet = await createWallet(
     client,
     COINS,
+    TRANSACTION_ID
   );
   const secondWallet = await createWallet(
     client,
-    COINS
+    COINS,
+    TRANSACTION_ID
   );
 
   const results1 = await findAllWallets(client);
@@ -165,10 +174,12 @@ test('When `deleteWalletsById` is called, then it deletes the wallet associated 
   const firstWallet = await createWallet(
     client,
     COINS,
+    TRANSACTION_ID
   );
   const secondWallet = await createWallet(
     client,
-    COINS
+    COINS,
+    TRANSACTION_ID
   );
 
   const results1 = await findAllWallets(client);

@@ -7,8 +7,8 @@ export const DELETE_WALLET_BY_ID = `
 export const DELETE_ALL_WALLETS = `DELETE FROM ${TABLES.WALLETS}`;
 
 export const INSERT_WALLET = `
-  INSERT INTO ${TABLES.WALLETS} (coins)
-  VALUES ($1)
+  INSERT INTO ${TABLES.WALLETS} (coins, transaction_id)
+  VALUES ($1, $2)
   RETURNING *`;
 
 export const SELECT_ALL_WALLETS = `

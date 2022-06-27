@@ -20,6 +20,7 @@ export const _maybeNormalizeWallet = (
 export const _normalizeWallet = (wallet: WalletRow): Wallet => ({
   createdAt: wallet.created_at && new Date(wallet.created_at).toISOString(),
   coins: wallet.coins,
+  transactionId: wallet.transaction_id,
   id: Number(wallet.id),
   updatedAt: wallet.updated_at && new Date(wallet.updated_at).toISOString(),
 });
@@ -27,11 +28,13 @@ export const _normalizeWallet = (wallet: WalletRow): Wallet => ({
 export const createWallet = async (
   client: PoolClient,
   coins: number,
+  transactionId: string
 ) =>
   _normalizeWallet(
     (
       await client.query(INSERT_WALLET, [
-        coins
+        coins,
+        transactionId
       ])
     ).rows[0]
   );
@@ -55,6 +58,7 @@ export const updateWallet = async (
     (
       await client.query(UPDATE_WALLET_BY_ID, [
         wallet.coins,
+        wallet.transactionId,
         wallet.id,
       ])
     ).rows[0]

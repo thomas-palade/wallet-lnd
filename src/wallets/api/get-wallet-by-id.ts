@@ -1,17 +1,21 @@
 import { Request, RequestHandler, Response } from 'express';
 import { getClient } from '../../lib/postgres/pool';
+import { findWalletById } from '../wallet';
 
 export const getWalletById: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
   const client = await getClient();
-  console.log(req.body);
-  console.log(req.params);
   try {
+    const wallet = await findWalletById(client, req.body.id);
+    if (!wallet) {
+      res.status(404).send({});
+      return;
+    }
     res.status(200).send({
-      "transactionId" : "tx102",
-      "coins" : 1000
+      transactionId: wallet.transactionId,
+      coins: wallet.coins
     });
     return;
   } catch (err) {
