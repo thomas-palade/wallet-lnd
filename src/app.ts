@@ -12,7 +12,7 @@ setupWalletRoutes(app);
 
 process.on('SIGTERM', () => {
   console.log(
-    `BlackJack service received 'SIGTERM'. Initiating graceful shutdown.`
+    `Wallet service received 'SIGTERM'. Initiating graceful shutdown.`
   );
 
   const serverStop = util.promisify(server.stop);
@@ -21,7 +21,7 @@ process.on('SIGTERM', () => {
   setTimeout(async () => {
     await serverStop();
     await poolClose(null);
-    console.log(`BlackJack service finished graceful shutdown.`);
+    console.log(`Wallet service finished graceful shutdown.`);
   }, 5000);
 });
 
