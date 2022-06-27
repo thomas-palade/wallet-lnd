@@ -17,6 +17,6 @@ export const WALLET: Wallet = {
   updatedAt: UPDATED_AT.toISOString(),
 };
 
-export const GAME_INSERT: WalletInsert = {
+export const WALLET_INSERT: WalletInsert = {
   coins: COINS,
 };

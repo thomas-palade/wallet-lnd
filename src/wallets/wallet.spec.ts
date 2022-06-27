@@ -9,8 +9,6 @@ import { findAllRows } from '../lib/postgres/queries/find';
 
 import {
   CREATED_AT,
-  CURRENCY,
-  DEALER_CARDS,
   WALLET,
   WALLET_INSERT,
   COINS,
@@ -87,7 +85,7 @@ test('When `createWallet` is called, Then it returns the created wallet', async 
   });
 });
 
-test('When `findAllWallets` is called Then it returns all the games', async (t) => {
+test('When `findAllWallets` is called Then it returns all the wallets', async (t) => {
   const firstWallet = await createWallet(
     client,
     COINS,
@@ -102,11 +100,33 @@ test('When `findAllWallets` is called Then it returns all the games', async (t) 
   t.deepEqual(results, [secondWallet, firstWallet]);
 });
 
-test('When `findWalletById` is called with an `id` parameter, Then it returns the `Game` associated with that `id`', async (t) => {
+test('When `findWalletById` is called with an `id` parameter, Then it returns the `Wallet` associated with that `id`', async (t) => {
   const created = (await createWallet(
     client,
     COINS
   )) as Wallet;
   const result = await findWalletById(client, created.id);
   t.deepEqual(result, created);
+});
+
+test('When `updateWallet` is called with `wallet` as parameter, Then it updates the `Wallet` with that walletId with that new values', async (t) => {
+  const created = (await createWallet(
+    client,
+    COINS,
+  )) as Wallet;
+
+  const UPDATED_WALLET = {
+    ...created,
+    coins: 6000
+  };
+
+  await updateWallet(client, UPDATED_WALLET);
+
+  const result = (await findGameById(client, created.id)) as Wallet;
+  const RESULT_FIELDS = {
+    ...created,
+    coins: result.coins
+  };
+
+  t.deepEqual(RESULT_FIELDS, UPDATED_WALLET);
 });
