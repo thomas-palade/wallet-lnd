@@ -1,8 +1,9 @@
 import { CURRENCIES } from '../../enums';
-import { randomUUID, randomDate } from "../../lib/randoms/random";
+import { randomUUID, randomDate, randomInteger } from "../../lib/helpers/random";
 
 export const CREATED_AT = randomDate();
-export const ID = randomUUID();
-export const PLAYER_ID_X = randomUUID();
+export const ID = randomInteger();
+export const COINS = 5000;
+export const PLAYER_ID = randomUUID();
 export const UPDATED_AT = randomDate();
 export const CURRENCY = CURRENCIES.SWEEPS;
