@@ -8,6 +8,7 @@ export const getWalletById: RequestHandler = async (
 ) => {
   const client = await getClient();
   try {
+    // maybe no parsing is needed here
     const wallet = await findWalletById(client, Number(req.params.walletId));
     if (!wallet) {
       res.status(404).send({});
