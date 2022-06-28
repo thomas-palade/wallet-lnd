@@ -56,7 +56,7 @@ test('When `POST` `/v1/wallets/:walletId/credit` is hit with an unknown `walletI
   });
 });
 
-test('Given an existing wallet associated with a given `walletId`, When `GET` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
+test('Given an existing wallet associated with a given `walletId`, When `POST` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
   const { id: walletId } = await createWallet(
     client,
     COINS,
@@ -76,7 +76,7 @@ test('Given an existing wallet associated with a given `walletId`, When `GET` `/
   });
 });
 
-test('Given an existing wallet associated with a given `walletId`, When `GET` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
+test('Given an existing wallet associated with a given `walletId`, When `POST` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
   const { id: walletId } = await createWallet(
     client,
     COINS,
