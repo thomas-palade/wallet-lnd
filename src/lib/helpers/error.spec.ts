@@ -1,4 +1,3 @@
-/* eslint-disable functional/no-class */
 import test from 'ava';
 import {
   toFailure,
