@@ -12,7 +12,7 @@ export const creditWalletById: RequestHandler = async (
     const { coins, transactionId } = req.body;
     if (!wallet) {
       const createdWallet = await createWallet(client, coins, transactionId);
-      res.status(200).send({
+      res.status(201).send({
         transactionId: createdWallet.transactionId,
         coins: createdWallet.coins
       });
