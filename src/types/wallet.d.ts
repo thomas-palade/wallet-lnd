@@ -19,3 +19,7 @@ type WalletRow = WalletInsert & {
   readonly id: string;
   readonly updated_at: Date;
 };
+
+type GetWallet = Wallet;
+type CreditWallet = Wallet;
+type DebitWallet = Wallet;

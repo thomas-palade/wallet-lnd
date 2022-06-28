@@ -17,7 +17,7 @@ export const creditWalletById: RequestHandler = async (
       return;
     }
 
-    const { wallet } = maybeWallet.value;
+    const wallet = maybeWallet.value;
     const { coins, transactionId } = wallet;
 
     if (!wallet) {

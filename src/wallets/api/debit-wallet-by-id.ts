@@ -17,7 +17,7 @@ export const debitWalletById: RequestHandler = async (
       return;
     }
 
-    const { wallet } = maybeWallet.value;
+    const wallet = maybeWallet.value;
     const { coins, transactionId } = wallet;
     if (!wallet) {
       res.status(404).send({});
