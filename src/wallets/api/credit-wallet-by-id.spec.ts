@@ -56,7 +56,7 @@ test('When `POST` `/v1/wallets/:walletId/credit` is hit with an unknown `walletI
   });
 });
 
-test('Given an existing wallet associated with a given `walletId`, When `GET` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
+test('Given an existing wallet associated with a given `walletId`, When `POST` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
   const { id: walletId } = await createWallet(
     client,
     COINS,
@@ -76,7 +76,7 @@ test('Given an existing wallet associated with a given `walletId`, When `GET` `/
   });
 });
 
-test('Given an existing wallet associated with a given `walletId`, When `GET` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
+test('Given an existing wallet associated with a given `walletId`, When `POST` `/v1/wallets/:walletId/`, Then it returns a 201 status and a `WalletObject` that contains the updated coins balance', async (t) => {
   const { id: walletId } = await createWallet(
     client,
     COINS,
@@ -94,6 +94,37 @@ test('Given an existing wallet associated with a given `walletId`, When `GET` `/
     transactionId: updatedWallet.transactionId,
     coins: updatedWallet.coins
   }, {
+    transactionId: NEW_TRANSACTION_ID,
+    coins: COINS + EXTRA_CREDITED_COINS
+  });
+});
+
+test('Given the exact same credit transaction is issued two times in a row, When `POST` `/v1/wallets/:walletId/credit`, Then it returns a 202 status and a `WalletObject` that contains the updated coins balance', async (t) => {
+  const { id: walletId } = await createWallet(
+    client,
+    COINS,
+    TRANSACTION_ID
+  );
+  const EXTRA_CREDITED_COINS = 20;
+  const response = await request(server)
+    .post(`/v1/wallets/${walletId}/credit`)
+    .send({
+      transactionId: NEW_TRANSACTION_ID,
+      coins: EXTRA_CREDITED_COINS
+    });
+  t.is(response.status, 201);
+  t.deepEqual(response.body, {
+    transactionId: NEW_TRANSACTION_ID,
+    coins: COINS + EXTRA_CREDITED_COINS
+  });
+  const secondResponse = await request(server)
+  .post(`/v1/wallets/${walletId}/credit`)
+  .send({
+    transactionId: NEW_TRANSACTION_ID,
+    coins: EXTRA_CREDITED_COINS
+  });
+  t.is(secondResponse.status, 202);
+  t.deepEqual(response.body, {
     transactionId: NEW_TRANSACTION_ID,
     coins: COINS + EXTRA_CREDITED_COINS
   });
