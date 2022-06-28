@@ -23,7 +23,7 @@ export const creditWalletById: RequestHandler = async (
       coins: wallet.coins + coins,
       transactionId: transactionId
     });
-    res.status(200).send({
+    res.status(201).send({
       transactionId: updatedWallet.transactionId,
       coins: updatedWallet.coins
     });
