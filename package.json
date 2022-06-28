@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node dist/app.js",
     "lint": "eslint . --ext .ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./bin/db-start && source bin/db-env && ava && db:stop"
   },
   "keywords": [],
   "author": "",
