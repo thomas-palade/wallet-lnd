@@ -59,6 +59,25 @@ test('Given an existing wallet associated with a given `walletId`, When `POST` `
     TRANSACTION_ID
   );
   const DEBITED_COINS = 20;
+  const response = await request(server)
+    .post(`/v1/wallets/${walletId}/debit`)
+    .send({
+      transactionId: NEW_TRANSACTION_ID,
+      coins: DEBITED_COINS
+    });
+  t.deepEqual(response.body, {
+    transactionId: NEW_TRANSACTION_ID,
+    coins: COINS - DEBITED_COINS
+  });
+});
+
+test('Given an existing wallet associated with a given `walletId`, When `POST` `/v1/wallets/:walletId/` is hit with less coins than the wallet contains, Then it updates the coins balance for that wallet in the database', async (t) => {
+  const { id: walletId } = await createWallet(
+    client,
+    COINS,
+    TRANSACTION_ID
+  );
+  const DEBITED_COINS = 20;
   await request(server)
     .post(`/v1/wallets/${walletId}/debit`)
     .send({
