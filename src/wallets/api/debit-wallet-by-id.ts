@@ -19,6 +19,13 @@ export const debitWalletById: RequestHandler = async (
       res.status(400).send({});
       return;
     }
+    if (wallet.transactionId === transactionId) {
+      res.status(202).send({
+        transactionId: wallet.transactionId,
+        coins: wallet.coins
+      });
+      return;
+    }
     const updatedWallet = await updateWallet(client, {
       ...wallet,
       coins: wallet.coins - coins,

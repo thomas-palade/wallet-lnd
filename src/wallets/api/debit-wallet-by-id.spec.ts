@@ -93,3 +93,34 @@ test('Given an existing wallet associated with a given `walletId`, When `POST` `
     coins: COINS - DEBITED_COINS
   });
 });
+
+test('Given the exact same debit transaction is issued two times in a row, When `POST` `/v1/wallets/:walletId/debit`, Then it returns a 202 status and a `WalletObject` that contains the updated coins balance', async (t) => {
+  const { id: walletId } = await createWallet(
+    client,
+    COINS,
+    TRANSACTION_ID
+  );
+  const DEBITED_COINS = 20;
+  const response = await request(server)
+    .post(`/v1/wallets/${walletId}/debit`)
+    .send({
+      transactionId: NEW_TRANSACTION_ID,
+      coins: DEBITED_COINS
+    });
+  t.is(response.status, 201);
+  t.deepEqual(response.body, {
+    transactionId: NEW_TRANSACTION_ID,
+    coins: COINS - DEBITED_COINS
+  });
+  const secondResponse = await request(server)
+  .post(`/v1/wallets/${walletId}/debit`)
+  .send({
+    transactionId: NEW_TRANSACTION_ID,
+    coins: DEBITED_COINS
+  });
+  t.is(secondResponse.status, 202);
+  t.deepEqual(response.body, {
+    transactionId: NEW_TRANSACTION_ID,
+    coins: COINS - DEBITED_COINS
+  });
+});
