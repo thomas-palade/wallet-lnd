@@ -18,7 +18,7 @@ export const CREDIT_WALLET_SCHEMA = z
     walletId: UUID_SCHEMA
   }).strict();
 
-  export const DEBIT_WALLET_SCHEMA = z
+export const DEBIT_WALLET_SCHEMA = z
   .object({
     body: z.object({
       transactionId: z.string(),
