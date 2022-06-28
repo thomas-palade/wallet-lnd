@@ -1,14 +1,17 @@
 import { Request } from 'express';
+import { PoolClient } from 'pg';
 import { toFailure, toSuccess } from '../../lib/helpers/error';
 
 import { GET_WALLET_SCHEMA } from '../schemas';
+import { findWalletById } from '../wallet';
 
-export const parseGetWallet = (
+export const parseGetWallet = async (
+  client: PoolClient,
   request: Request
-): Either<Error, GetWallet> => {
+): Promise<Either<Error, GetWallet>> => {
   // `safeParse` validates without throwing errors: https://www.npmjs.com/package/zod#safeparse
-  const body = request.body;
-  const maybeGetWalletPayload = GET_WALLET_SCHEMA.safeParse(body);
+  const requestContaints = { body: request.body, walletId: request.params.walletId };
+  const maybeGetWalletPayload = GET_WALLET_SCHEMA.safeParse(requestContaints);
   if (!maybeGetWalletPayload.success) {
     return toFailure(
       400,
@@ -17,5 +20,6 @@ export const parseGetWallet = (
     );
   }
 
-  return toSuccess(200, maybeGetWalletPayload.data);
+  const wallet = await findWalletById(client, Number(request.params.walletId));
+  return toSuccess(200, wallet);
 };

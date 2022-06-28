@@ -1,6 +1,7 @@
 import { Request, RequestHandler, Response } from 'express';
 import { getClient } from '../../lib/postgres/pool';
-import { findWalletById, updateWallet } from '../wallet';
+import { updateWallet } from '../wallet';
+import { parseDebitWallet } from './debit-wallet-parser';
 
 export const debitWalletById: RequestHandler = async (
   req: Request,
@@ -8,8 +9,16 @@ export const debitWalletById: RequestHandler = async (
 ) => {
   const client = await getClient();
   try {
-    const wallet = await findWalletById(client, Number(req.params.walletId));
-    const { coins, transactionId } = req.body;
+    const maybeWallet = await parseDebitWallet(client, req);
+    if (!maybeWallet.ok) {
+      res.status(400).send({
+        message: maybeWallet.error.message
+      })
+      return;
+    }
+
+    const wallet = maybeWallet.value;
+    const { coins, transactionId } = wallet;
     if (!wallet) {
       res.status(404).send({});
       return;

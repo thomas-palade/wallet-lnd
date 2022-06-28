@@ -1,11 +1,14 @@
 import { Request } from 'express';
+import { PoolClient } from 'pg';
 import { toFailure, toSuccess } from '../../lib/helpers/error';
 
 import { DEBIT_WALLET_SCHEMA } from '../schemas';
+import { findWalletById } from '../wallet';
 
-export const parseDebitWallet = (
+export const parseDebitWallet = async (
+  client: PoolClient,
   request: Request
-): Either<Error, DebitWallet> => {
+): Promise<Either<Error, DebitWallet>> => {
   // `safeParse` validates without throwing errors: https://www.npmjs.com/package/zod#safeparse
   const body = request.body;
   const maybeDebitWalletPayload = DEBIT_WALLET_SCHEMA.safeParse(body);
@@ -17,5 +20,6 @@ export const parseDebitWallet = (
     );
   }
 
-  return toSuccess(200, maybeDebitWalletPayload.data);
+  const wallet = await findWalletById(client, Number(request.params.walletId));
+  return toSuccess(200, wallet);
 };
