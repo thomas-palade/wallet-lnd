@@ -11,7 +11,7 @@ $$;
 
 CREATE TABLE wallets (
   id BIGSERIAL NOT NULL PRIMARY KEY,
-  transaction_id NOT NULL TEXT[],
+  transaction_id TEXT[],
   coins INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
