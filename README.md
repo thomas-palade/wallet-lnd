@@ -18,5 +18,3 @@ If the same Credit or Debit is issued immediately after each other, the request 
 
 A wallet is created simply by crediting it.
 ```
-
-WORK IN PROGRESS

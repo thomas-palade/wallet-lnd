@@ -24,20 +24,67 @@ test.after(() => {
   close(pool);
 });
 
-test('Given an ..., When `parseDebitWallet` is called, Then it returns an `Error`', async (t) => {
+test('When `parseDebitWallet` is called with a wrong `transactionId`, Then it returns an `Error`', async (t) => {
   const { id: walletId } = await createWallet(
     client,
     COINS,
     TRANSACTION_ID
   );
   const maybeWallet = await parseDebitWallet(client, {
-    body: {},
+    body: {
+      transactionId: 12312312,
+      coins: COINS
+    },
     params: { walletId: walletId },
   } as unknown as Request);
   t.deepEqual(
     maybeWallet,
     toFailure(
-      404,
+      400,
+      'this is an error'
+    )
+  );
+});
+
+test('When `parseDebitWallet` is called with a wrong `coins`, Then it returns an `Error`', async (t) => {
+  const { id: walletId } = await createWallet(
+    client,
+    COINS,
+    TRANSACTION_ID
+  );
+  const maybeWallet = await parseDebitWallet(client, {
+    body: {
+      transactionId: TRANSACTION_ID,
+      coins: 'bad coins'
+    },
+    params: { walletId: walletId },
+  } as unknown as Request);
+  t.deepEqual(
+    maybeWallet,
+    toFailure(
+      400,
+      'this is an error'
+    )
+  );
+});
+
+test('When `parseDebitWallet` is called with a wrong `walletId`, Then it returns an `Error`', async (t) => {
+  await createWallet(
+    client,
+    COINS,
+    TRANSACTION_ID
+  );
+  const maybeWallet = await parseDebitWallet(client, {
+    body: {
+      transactionId: TRANSACTION_ID,
+      coins: COINS
+    },
+    params: { walletId: 'bad wallet' },
+  } as unknown as Request);
+  t.deepEqual(
+    maybeWallet,
+    toFailure(
+      400,
       'this is an error'
     )
   );
