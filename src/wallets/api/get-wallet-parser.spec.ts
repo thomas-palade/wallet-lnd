@@ -24,20 +24,20 @@ test.after(() => {
   close(pool);
 });
 
-test('Given an ..., When `parseGetWallet` is called, Then it returns an `Error`', async (t) => {
-  const { id: walletId } = await createWallet(
+test('When `parseGetWallet` is called with a wrong `walletId`, Then it returns an `Error`', async (t) => {
+  await createWallet(
     client,
     COINS,
     TRANSACTION_ID
   );
   const maybeWallet = await parseGetWallet(client, {
     body: {},
-    params: { walletId: walletId },
+    params: { walletId: 'bad wallet' },
   } as unknown as Request);
   t.deepEqual(
     maybeWallet,
     toFailure(
-      404,
+      400,
       'this is an error'
     )
   );
